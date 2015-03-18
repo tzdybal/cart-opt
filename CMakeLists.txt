@@ -10,7 +10,7 @@ find_package(XercesC REQUIRED)
 find_package(LibTidy REQUIRED)
 
 if(NOT MSVC)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -pedantic -pedantic-errors")
 endif()
 
 include_directories(
@@ -21,5 +21,5 @@ include_directories(
 	"${LIBTIDY_INCLUDE_DIRS}"
 )
 
-add_executable(sandbox test/sandbox.cpp src/curl.cpp)
-target_link_libraries(sandbox "${CURL_LIBRARIES}" boost_system boost_filesystem)
+add_executable(sandbox test/sandbox.cpp src/curl.cpp src/ceneo_scraper.cpp)
+target_link_libraries(sandbox "${CURL_LIBRARIES}" "${XercesC_LIBRARIES}" boost_system boost_filesystem)

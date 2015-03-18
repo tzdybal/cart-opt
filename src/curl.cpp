@@ -35,7 +35,7 @@ void curl::download(const std::string& url, const std::string& target_file) {
 }
 
 size_t curl::write_to_file(void* ptr, size_t size, size_t nmemb, void* stream) {
-	fwrite(ptr, size, nmemb, (FILE *)stream);
+	return fwrite(ptr, size, nmemb, (FILE *)stream);
 }
 
 } // namespace cart_opt
