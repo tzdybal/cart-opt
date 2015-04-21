@@ -2,80 +2,37 @@
 
 #include <iostream>
 
-#include <xercesc/sax2/SAX2XMLReader.hpp>
-#include <xercesc/sax2/XMLReaderFactory.hpp>
-#include <xercesc/sax2/DefaultHandler.hpp>
-#include <xercesc/util/XMLString.hpp>
+#include <pugixml.hpp>
 
-using namespace xercesc;
 
 namespace cart_opt { namespace scraper {
 
 ceneo_scraper::ceneo_scraper() {
-	try {
-		XMLPlatformUtils::Initialize();
-	}
-	catch (const XMLException& toCatch) {
-		char* message = XMLString::transcode(toCatch.getMessage());
-		std::cout << "Error during initialization! :\n";
-		std::cout << "Exception message is: \n"
-			<< message << "\n";
-		XMLString::release(&message);
-		throw;
-	}
 }
 
 void ceneo_scraper::process(const std::string& file) {
-	const char* xmlFile = file.c_str();
-	SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
-	parser->setFeature(XMLUni::fgSAX2CoreValidation, false);
-	parser->setFeature(XMLUni::fgSAX2CoreNameSpaces, false);
-	parser->setFeature(XMLUni::fgXercesContinueAfterFatalError, true);
+	pugi::xml_document doc;
 
-	DefaultHandler* defaultHandler = new ceneo_handler();
-	parser->setContentHandler(defaultHandler);
-	parser->setErrorHandler(defaultHandler);
+	auto result = doc.load_file(file.c_str());
+	std::cout << "Error description: " << result.description() << "\n";
+	std::cout << "Error offset: " << result.offset << "\n\n";
 
-	try {
-		parser->parse(xmlFile);
+	pugi::xpath_node_set offers = doc.select_nodes("//li[@class='offer-row gtm_or_bs']//strong[@class='price']");
+	std::cout << "offers:" << std::endl;
+
+	for (auto offer : offers) {
+		std::cout << "offer" << std::endl;
+		std::string price = offer.node().child_value("b");
+		price += offer.node().child("b").child_value("sup");
+		price[price.find(',')] = '.';
+
+		std::string uri = offer.parent().attribute("href").value();
+
+
+		std::cout << uri << ": " << price << std::endl;
 	}
-	catch (const XMLException& toCatch) {
-		char* message = XMLString::transcode(toCatch.getMessage());
-		std::cout << "Exception message is: \n"
-			<< message << "\n";
-		XMLString::release(&message);
-		throw;
-	}
-	catch (const SAXParseException& toCatch) {
-		char* message = XMLString::transcode(toCatch.getMessage());
-		std::cout << "Exception message is: \n"
-			<< message << "\n";
-		XMLString::release(&message);
-		throw;
-	}
-	catch (...) {
-		std::cout << "Unexpected Exception \n" ;
-		throw;
-	}
+
 }		
 
-void ceneo_handler::startElement(const   XMLCh* const    uri,
-		const   XMLCh* const    localname,
-		const   XMLCh* const    qname,
-		const   Attributes&     attrs)
-{
-	char* message = XMLString::transcode(qname);
-	std::cout << "I saw element: "<< message << std::endl;
-	XMLString::release(&message);
-}
-
-void ceneo_handler::fatalError(const SAXParseException& exception)
-{
-	char* message = XMLString::transcode(exception.getMessage());
-	std::cout << "Fatal Error: " << message
-		<< " at line: " << exception.getLineNumber()
-		<< std::endl;
-	XMLString::release(&message);
-}
 
 }} // namespace cart_opt::scraper
