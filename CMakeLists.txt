@@ -8,11 +8,13 @@ find_package(Boost REQUIRED)
 find_package(CURL REQUIRED)
 find_package(LibTidy REQUIRED)
 
-SET(PUGIXML_DIR "libs/pugixml/src")
+set(PUGIXML_DIR "libs/pugixml/src")
 
 if(NOT MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -pedantic -pedantic-errors")
 endif()
+
+# add_definitions("-DPUGIXML_WCHAR_MODE")
 
 include_directories(
 	"include" 

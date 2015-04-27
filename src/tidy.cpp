@@ -7,7 +7,7 @@
 namespace cart_opt { namespace tidy {
 
 void tidy::process(const std::string& file) {
-	system(("tidy -q -m -asxml " + file + " 2> /dev/null").c_str()); // TODO: change to library calls
+	system(("tidy -q -m -utf8 -asxml " + file + " 2> /dev/null").c_str()); // TODO: change to library calls
 
 	// ugly way to do it...
 	std::ifstream istr(file);
@@ -22,7 +22,7 @@ void tidy::process(const std::string& file) {
 
 	std::ofstream ostr(file);
 	ostr << contents;
-	std::cout << contents << std::endl;
+	//std::cout << contents << std::endl;
 	ostr.flush();
 	ostr.close();
 }

@@ -17,19 +17,37 @@ void skapiec_scraper::process(const std::string& file) {
 	std::cout << "Error description: " << result.description() << "\n";
 	std::cout << "Error offset: " << result.offset << "\n\n";
 
-	pugi::xpath_node_set offers = doc.select_nodes("//li[@class='offer-row gtm_or_bs']//strong[@class='price']");
+	pugi::xpath_node_set offers = doc.select_nodes("//li[@class='offer-row gtm_or_bs']");
 	std::cout << "offers:" << std::endl;
 
+
 	for (auto offer : offers) {
-		std::cout << "offer" << std::endl;
-		std::string price = offer.node().child_value("b");
-		price += offer.node().child("b").child_value("sup");
-		price[price.find(',')] = '.';
+		pugi::string_t shop;
+		pugi::string_t price;
+		pugi::string_t uri;
 
-		std::string uri = offer.parent().attribute("href").value();
+		for (pugi::xml_node column : offer.node().children("div")) {
+			for (pugi::xml_node cell : column.children("div")) {
+				pugi::string_t cls = cell.attribute("class").value();
+
+				if ("store" == cls) {
+					std::cout << "store" << std::endl;
+					shop = cell.child_value("a");
+
+				} else if ("offer" == cls) {
+					std::cout << "offer" << std::endl;
+					pugi::xml_node offer = cell.child("a").child("strong");
+					price = offer.child_value("b");
+					price += offer.child("b").child_value("sup");
+					price[price.find(',')] = '.';
+					uri = offer.parent().attribute("href").value();
+				}
+			}
+		}
 
 
-		std::cout << uri << ": " << price << std::endl;
+
+		std::cout << "Offer:" << "http://skapiec.pl/" << uri << " : " << shop << " : " << price << std::endl;
 	}
 
 }		

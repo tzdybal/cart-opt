@@ -6,6 +6,8 @@
 #include <skapiec_scraper.hpp>
 #include <tidy.hpp>
 
+#include <iostream>
+
 int main(int argc, char** argv) {
 	cart_opt::curl c;
 
