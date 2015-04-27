@@ -3,7 +3,7 @@
 #include <boost/filesystem.hpp>
 
 #include <curl.hpp>
-#include <ceneo_scraper.hpp>
+#include <skapiec_scraper.hpp>
 #include <tidy.hpp>
 
 int main(int argc, char** argv) {
@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 	t.process(tmp_file);
 
 
-	cart_opt::scraper::ceneo_scraper scraper;
+	cart_opt::scraper::skapiec_scraper scraper;
 	scraper.process(tmp_file);
 
 	boost::filesystem::remove(tmp_file);

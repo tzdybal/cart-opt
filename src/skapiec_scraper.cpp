@@ -1,4 +1,4 @@
-#include <ceneo_scraper.hpp>
+#include <skapiec_scraper.hpp>
 
 #include <iostream>
 
@@ -7,10 +7,10 @@
 
 namespace cart_opt { namespace scraper {
 
-ceneo_scraper::ceneo_scraper() {
+skapiec_scraper::skapiec_scraper() {
 }
 
-void ceneo_scraper::process(const std::string& file) {
+void skapiec_scraper::process(const std::string& file) {
 	pugi::xml_document doc;
 
 	auto result = doc.load_file(file.c_str());

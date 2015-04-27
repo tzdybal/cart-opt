@@ -1,17 +1,17 @@
-#ifndef _CENEO_SCRAPER_HPP
-#define _CENEO_SCRAPER_HPP
+#ifndef _skapiec_scraper_HPP
+#define _skapiec_scraper_HPP
 
 #include <string>
 
 namespace cart_opt { namespace scraper {
 
-class ceneo_scraper {
+class skapiec_scraper {
 public:
-	ceneo_scraper();
+	skapiec_scraper();
 	void process(const std::string& file);
 private:
 };
 
 }} // namespace cart_opt::scraper
 
-#endif // _CENEO_SCRAPER_HPP
+#endif // _skapiec_scraper_HPP
