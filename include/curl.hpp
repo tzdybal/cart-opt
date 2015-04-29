@@ -1,5 +1,4 @@
-#ifndef _CURL_HPP
-#define _CURL_HPP
+#pragma once
 
 #include <string>
 #include <curl/curl.h>
@@ -21,5 +20,3 @@ private:
 };
 
 } // namespace cart_opt
-
-#endif // _CURL_HPP

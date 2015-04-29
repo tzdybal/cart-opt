@@ -24,5 +24,5 @@ include_directories(
 	"${LIBTIDY_INCLUDE_DIRS}"
 )
 
-add_executable(sandbox test/sandbox.cpp src/curl.cpp src/skapiec_scraper.cpp src/tidy.cpp "${PUGIXML_DIR}/pugixml.cpp")
+add_executable(sandbox test/sandbox.cpp src/curl.cpp src/skapiec_scraper.cpp src/tidy.cpp src/types.cpp "${PUGIXML_DIR}/pugixml.cpp")
 target_link_libraries(sandbox "${CURL_LIBRARIES}" boost_system boost_filesystem)
